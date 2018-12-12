@@ -16,11 +16,33 @@ import javax.security.auth.callback.Callback;
 public class TriviaActivity extends AppCompatActivity implements TriviaRequest.Callback{
 
     ArrayList<Question> Trivia = new ArrayList<Question>();
+    int highscore;
+    int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trivia);
+
+        // Get counter from startactivity
+        Intent count = getIntent();
+        counter = count.getIntExtra("counter", 0);
+
+        // Get counter from questionactivity
+        Intent updatecount = getIntent();
+        counter = updatecount.getIntExtra("countor", 0);
+
+        System.out.println("COUNTER: " + counter);
+
+        // Get 0 highscore from startactivity
+        Intent score = getIntent();
+        highscore = score.getIntExtra("highscore", 0);
+
+        // Get highscore from questionactivity
+        Intent updatehighscore = getIntent();
+        highscore = updatehighscore.getIntExtra("answer", 0);
+
+        System.out.println("HIGHSCORE: " + highscore);
 
         // Make a new API request to get new questions and answers
         TriviaRequest request = new TriviaRequest(this);
@@ -29,7 +51,6 @@ public class TriviaActivity extends AppCompatActivity implements TriviaRequest.C
         // Set the listener on the listview
         ListView ListViewQuestions = findViewById(R.id.ListViewQuestions);
         ListViewQuestions.setOnItemClickListener(new ListViewListener());
-
     }
 
     @Override
@@ -48,7 +69,6 @@ public class TriviaActivity extends AppCompatActivity implements TriviaRequest.C
     @Override
     public void gotTriviaError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        System.out.println("ERROR1");
     }
 
     private class ListViewListener implements AdapterView.OnItemClickListener {
@@ -63,15 +83,16 @@ public class TriviaActivity extends AppCompatActivity implements TriviaRequest.C
 
                 // Get type of question
                 String type = clickedQuestion.getType();
-                System.out.println(type);
 
                 // Different activity for multiple and boolean
                 switch (type) {
                     case "multiple":
 
-                        // Open question activity with multiple answers
+                        // Open question activity with multiple answers, pass int highscore along
                         Intent toQuestion = new Intent(TriviaActivity.this, QuestionActivity.class);
                         toQuestion.putExtra("clickedQuestion", clickedQuestion);
+                        toQuestion.putExtra("hogescore", highscore);
+                        toQuestion.putExtra("teller", counter);
                         startActivity(toQuestion);
                         break;
 
@@ -80,6 +101,8 @@ public class TriviaActivity extends AppCompatActivity implements TriviaRequest.C
                         // Open question activity with boolean answers
                         Intent toBoolean = new Intent(TriviaActivity.this, BooleanQuestionActivity.class);
                         toBoolean.putExtra("clickedQuestion", clickedQuestion);
+                        toBoolean.putExtra("hogescore", highscore);
+                        toBoolean.putExtra("teller", counter);
                         startActivity(toBoolean);
                         break;
                 }

@@ -1,8 +1,10 @@
 package com.example.wvand.trivia;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -21,6 +23,17 @@ public class QuestionActivity extends AppCompatActivity implements Response.Erro
     Question question;
     String difficulty;
     String points = new String();
+    int highscore;
+    int counter;
+
+    // Method for decoding html strings
+    public String decodeHtml(String input) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(input, Html.FROM_HTML_MODE_LEGACY).toString();
+        } else {
+            return Html.fromHtml(input).toString();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +62,18 @@ public class QuestionActivity extends AppCompatActivity implements Response.Erro
         String incorrect2 = incorrectAnswers[1];
         String incorrect3 = incorrectAnswers[2].replace("]", " ");
 
+        // Decode HTML strings
+        String mainQuest = decodeHtml(mainQuestion);
+        String incorrectone = decodeHtml(incorrect1);
+        String incorrecttwo = decodeHtml(incorrect2);
+        String incorrectthree = decodeHtml(incorrect3);
+
         // Set the question with data from intent
-        theQuestion.setText(mainQuestion);
+        theQuestion.setText(mainQuest);
         answer1.setText(correctAnswer);
-        answer2.setText(String.valueOf(incorrect1));
-        answer3.setText(String.valueOf(incorrect2));
-        answer4.setText(String.valueOf(incorrect3));
+        answer2.setText(incorrectone);
+        answer3.setText(incorrecttwo);
+        answer4.setText(incorrectthree);
     }
 
     // Method for first checkbox (with correct answer), to see if checked
@@ -127,31 +146,46 @@ public class QuestionActivity extends AppCompatActivity implements Response.Erro
 
     public void submitAnswer(View view) {
 
+        // Get intent with highscore and counter
+        Intent count = getIntent();
+        highscore = count.getIntExtra("hogescore", 0);
+        counter = count.getIntExtra("teller", 0);
+
+        counter += 1;
 
         CheckBox correct = findViewById(R.id.answer1);
 
         // See if checkbox is checked, if so, allocate points depending on difficulty
         if (correct.isChecked()) {
             if (this.difficulty == "easy") {
-                points += 10;
+                highscore = highscore + 10;
             } else if (this.difficulty == "medium") {
-                points += 20;
+                highscore = highscore + 20;
             } else {
-                points += 30;
+                highscore = highscore + 30;
             }
         }
 
-        // If user submits answer, redirection with points to main app takes place
+        // If user submits answer, redirection with highscore and counter to main app takes place
         Intent backtoMainTrivia = new Intent(QuestionActivity.this, TriviaActivity.class);
-        backtoMainTrivia.putExtra("answer", points);
+        backtoMainTrivia.putExtra("answer", highscore);
+        backtoMainTrivia.putExtra("countor", counter);
         startActivity(backtoMainTrivia);
 
+        // Post score if six questions are reached
+        if (counter == 7) {
 
-        // TEST: post score of single question in a web server
-        String url = "https://ide50-wpvandijk.cs50.io:8080/trivia";
-        RequestQueue queue = Volley.newRequestQueue(this);
-        PostRequest request = new PostRequest(Request.Method.POST, url, this, this, points);
-        queue.add(request);
+            // Cast the int highscore to a string
+            points = String.valueOf(highscore);
+
+            String url = "https://ide50-wpvandijk.cs50.io:8080/trivial";
+            RequestQueue queue = Volley.newRequestQueue(this);
+            PostRequest request = new PostRequest(Request.Method.POST, url, this, this, points);
+            queue.add(request);
+
+            Intent toHighscore = new Intent(QuestionActivity.this, HighscoreActivity.class);
+            startActivity(toHighscore);
+        }
     }
 
     @Override
