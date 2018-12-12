@@ -20,7 +20,7 @@ public class QuestionActivity extends AppCompatActivity implements Response.Erro
 
     Question question;
     String difficulty;
-    String points;
+    String points = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,6 @@ public class QuestionActivity extends AppCompatActivity implements Response.Erro
         answer2.setText(String.valueOf(incorrect1));
         answer3.setText(String.valueOf(incorrect2));
         answer4.setText(String.valueOf(incorrect3));
-
     }
 
     // Method for first checkbox (with correct answer), to see if checked
@@ -128,6 +127,7 @@ public class QuestionActivity extends AppCompatActivity implements Response.Erro
 
     public void submitAnswer(View view) {
 
+
         CheckBox correct = findViewById(R.id.answer1);
 
         // See if checkbox is checked, if so, allocate points depending on difficulty
@@ -146,14 +146,12 @@ public class QuestionActivity extends AppCompatActivity implements Response.Erro
         backtoMainTrivia.putExtra("answer", points);
         startActivity(backtoMainTrivia);
 
+
         // TEST: post score of single question in a web server
         String url = "https://ide50-wpvandijk.cs50.io:8080/trivia";
         RequestQueue queue = Volley.newRequestQueue(this);
-        PostRequest request = new PostRequest(Request.Method.POST, url, this, this);
-
+        PostRequest request = new PostRequest(Request.Method.POST, url, this, this, points);
         queue.add(request);
-
-        System.out.println("Parameters : " + request.getParams());
     }
 
     @Override

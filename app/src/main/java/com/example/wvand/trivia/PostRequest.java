@@ -11,9 +11,13 @@ import java.util.Map;
 */
 public class PostRequest extends StringRequest {
 
+    String pointies;
+
     // Constructor
-    public PostRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+    public PostRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener, String points) {
         super(method, url, listener, errorListener);
+
+        pointies = points;
 
     }
 
@@ -23,7 +27,7 @@ public class PostRequest extends StringRequest {
     protected Map<String, String> getParams() {
 
         Map<String, String> params = new HashMap<>();
-        params.put("studentcount", "300");
+        params.put("highscore", pointies);
         return params;
     }
 }
