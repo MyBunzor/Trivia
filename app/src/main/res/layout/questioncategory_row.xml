@@ -12,6 +12,7 @@
         android:layout_height="64dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="serif"
         android:text="TextView"
         android:textColorLink="@color/colorPrimaryDark"
         android:textSize="24sp"
