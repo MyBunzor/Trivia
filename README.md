@@ -9,6 +9,8 @@ src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaCategories1.png" 
 src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaMultipleQuestion1.png" width="25%" height="25%"/>  <img 
 src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaHighscores.png" width="25%" height="25%"/>
 
+Note: as the last updates on the app were made, the server on which the highscores were stored and retrieved wasn't up and no games were completed. That's why no scores are visible.
+
 
 
 
