@@ -4,7 +4,11 @@
 When the 7 questions are answered, game is completed. Each game sets a score in the highscorelist, which is shown after the seventh 
 question is answered.
 
-<img src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaStart.png" width="30%" height="30%"/> <img
-src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaCategories.png" width="30%" height="25%"/> <img 
-src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaMultipleQuestion.png" width="30%" height="30%"/>
+<img src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaStart.png" width="25%" height="25%"/> <img
+src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaCategories.png" width="25%" height="25%"/> <img 
+src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaMultipleQuestion.png" width="25%" height="25%"/>  <img 
+src="https://github.com/MyBunzor/Trivia/blob/master/docs/TriviaHighscores.png" width="25%" height="25%"/>
+
+
+
 
